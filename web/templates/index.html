@@ -3,18 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sudoku Solver</title>
+    <title>Sudoku Solver - Web Interface</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Sudoku Solver</h1>
-        <form id="sudoku-form">
-            <textarea id="puzzle-input" placeholder="Enter your Sudoku puzzle here..."></textarea>
-            <button type="submit">Solve</button>
-        </form>
-        <div id="result"></div>
+    <div class="page-container">
+        <header>
+            <div class="header-content">
+                <h1>🧩 Sudoku Solver</h1>
+                <p class="subtitle">Solve Sudoku puzzles instantly using backtracking algorithm</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="container">
+                <!-- Input Section -->
+                <section class="input-section">
+                    <div class="section-header">
+                        <h2>Input Puzzle</h2>
+                        <p class="hint">Enter your puzzle in any format (line, multiline, 2D array, JSON)</p>
+                    </div>
+
+                    <div class="input-area">
+                        <textarea 
+                            id="puzzle-input" 
+                            class="puzzle-textarea" 
+                            placeholder="Paste your Sudoku puzzle here..."
+                            rows="9"></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button id="validate-btn" class="btn btn-secondary" title="Validate puzzle format">
+                            ✓ Validate
+                        </button>
+                        <button id="solve-btn" class="btn btn-primary" title="Solve the puzzle">
+                            ⚡ Solve
+                        </button>
+                        <button id="clear-btn" class="btn btn-secondary" title="Clear input">
+                            ✕ Clear
+                        </button>
+                    </div>
+
+                    <div class="examples">
+                        <p>Quick start:</p>
+                        <button class="example-btn" data-example="easy">Easy Puzzle</button>
+                        <button class="example-btn" data-example="medium">Medium Puzzle</button>
+                        <button class="example-btn" data-example="hard">Hard Puzzle</button>
+                    </div>
+                </section>
+
+                <!-- Status Messages -->
+                <div id="status-message" class="status-message"></div>
+
+                <!-- Output Section -->
+                <section id="output-section" class="output-section" style="display: none;">
+                    <div class="section-header">
+                        <h2>Solution</h2>
+                    </div>
+
+                    <div class="grid-container">
+                        <div class="grid-wrapper">
+                            <h3>Original Puzzle</h3>
+                            <div id="puzzle-grid" class="sudoku-grid"></div>
+                        </div>
+                        <div class="grid-wrapper">
+                            <h3>Solution</h3>
+                            <div id="solution-grid" class="sudoku-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Time:</span>
+                            <span id="stat-time" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Steps:</span>
+                            <span id="stat-steps" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Status:</span>
+                            <span id="stat-status" class="stat-value">✓ Solved</span>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button id="copy-solution-btn" class="btn btn-secondary" title="Copy solution to clipboard">
+                            📋 Copy Solution
+                        </button>
+                        <button id="new-puzzle-btn" class="btn btn-secondary" title="Solve another puzzle">
+                            ➕ New Puzzle
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <p>Sudoku Solver © 2026 | Built with Python, Flask & ♥</p>
+        </footer>
     </div>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
