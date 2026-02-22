@@ -5,6 +5,8 @@ This module provides validation for Sudoku puzzles to ensure they follow
 standard Sudoku rules: no duplicates in rows, columns, or 3x3 boxes.
 """
 
+from typing import Optional
+
 
 class RuleValidator:
     """
@@ -14,17 +16,17 @@ class RuleValidator:
     empty cells (represented by 0) are ignored during validation.
     """
     
-    def __init__(self, puzzle=None):
+    def __init__(self, puzzle: Optional[list[list[int]]] = None) -> None:
         """
         Initialize the validator with an optional puzzle.
         
         Args:
             puzzle: 9x9 2D list representing the puzzle (optional)
         """
-        self.puzzle = puzzle
-        self.errors = []
+        self.puzzle: Optional[list[list[int]]] = puzzle
+        self.errors: list[str] = []
     
-    def validate(self, puzzle=None):
+    def validate(self, puzzle: Optional[list[list[int]]] = None) -> bool:
         """
         Main validation method. Checks if puzzle follows all Sudoku rules.
         
@@ -56,8 +58,9 @@ class RuleValidator:
                 self.check_columns() and 
                 self.check_boxes())
     
-    def _check_dimensions(self):
+    def _check_dimensions(self) -> bool:
         """Check if puzzle has correct 9x9 dimensions."""
+        assert self.puzzle is not None
         if not isinstance(self.puzzle, list) or len(self.puzzle) != 9:
             self.errors.append("Puzzle must be a 9x9 grid")
             return False
@@ -69,8 +72,9 @@ class RuleValidator:
         
         return True
     
-    def _check_values(self):
+    def _check_values(self) -> bool:
         """Check if all values are integers between 0-9."""
+        assert self.puzzle is not None
         for i, row in enumerate(self.puzzle):
             for j, val in enumerate(row):
                 if not isinstance(val, int) or val < 0 or val > 9:
@@ -81,13 +85,14 @@ class RuleValidator:
                     return False
         return True
     
-    def check_rows(self):
+    def check_rows(self) -> bool:
         """
         Validate all rows for duplicate numbers.
         
         Returns:
             bool: True if all rows are valid, False otherwise
         """
+        assert self.puzzle is not None
         for i, row in enumerate(self.puzzle):
             if not self._is_unique(row):
                 duplicates = self._find_duplicates(row)
@@ -97,13 +102,14 @@ class RuleValidator:
                 return False
         return True
     
-    def check_columns(self):
+    def check_columns(self) -> bool:
         """
         Validate all columns for duplicate numbers.
         
         Returns:
             bool: True if all columns are valid, False otherwise
         """
+        assert self.puzzle is not None
         for col_idx in range(9):
             column = [self.puzzle[row_idx][col_idx] for row_idx in range(9)]
             if not self._is_unique(column):
@@ -114,13 +120,14 @@ class RuleValidator:
                 return False
         return True
     
-    def check_boxes(self):
+    def check_boxes(self) -> bool:
         """
         Validate all 3x3 boxes for duplicate numbers.
         
         Returns:
             bool: True if all boxes are valid, False otherwise
         """
+        assert self.puzzle is not None
         for box_row in range(0, 9, 3):
             for box_col in range(0, 9, 3):
                 box = self._get_box(box_row, box_col)
@@ -134,7 +141,7 @@ class RuleValidator:
                     return False
         return True
     
-    def _get_box(self, start_row, start_col):
+    def _get_box(self, start_row: int, start_col: int) -> list[int]:
         """
         Extract all values from a 3x3 box.
         
@@ -145,13 +152,14 @@ class RuleValidator:
         Returns:
             list: Flat list of 9 values from the box
         """
-        box = []
+        assert self.puzzle is not None
+        box: list[int] = []
         for i in range(start_row, start_row + 3):
             for j in range(start_col, start_col + 3):
                 box.append(self.puzzle[i][j])
         return box
     
-    def _is_unique(self, values):
+    def _is_unique(self, values: list[int]) -> bool:
         """
         Check if non-zero values in a list are unique.
         
@@ -164,7 +172,7 @@ class RuleValidator:
         non_zero_values = [v for v in values if v != 0]
         return len(non_zero_values) == len(set(non_zero_values))
     
-    def _find_duplicates(self, values):
+    def _find_duplicates(self, values: list[int]) -> list[int]:
         """
         Find duplicate non-zero values in a list.
         
@@ -175,15 +183,15 @@ class RuleValidator:
             list: Sorted list of duplicate values
         """
         non_zero_values = [v for v in values if v != 0]
-        seen = set()
-        duplicates = set()
+        seen: set[int] = set()
+        duplicates: set[int] = set()
         for v in non_zero_values:
             if v in seen:
                 duplicates.add(v)
             seen.add(v)
         return sorted(duplicates)
     
-    def is_complete(self):
+    def is_complete(self) -> bool:
         """
         Check if puzzle is completely filled (no zeros).
         
@@ -198,7 +206,7 @@ class RuleValidator:
                 return False
         return True
     
-    def get_errors(self):
+    def get_errors(self) -> list[str]:
         """
         Get list of validation errors from last validation.
         
@@ -208,10 +216,10 @@ class RuleValidator:
         return self.errors.copy()
     
     # Legacy method names for backward compatibility
-    def is_valid(self):
+    def is_valid(self) -> bool:
         """Legacy method - use validate() instead."""
         return self.validate()
     
-    def check_subgrids(self):
+    def check_subgrids(self) -> bool:
         """Legacy method - use check_boxes() instead."""
         return self.check_boxes()

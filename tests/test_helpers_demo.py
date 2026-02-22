@@ -43,7 +43,10 @@ def main():
     # Find empty location
     print("4. Finding first empty location:")
     empty_loc = find_empty_location(sample_puzzle)
-    print(f"   First empty cell at: row {empty_loc[0]}, col {empty_loc[1]}")
+    if empty_loc is not None:
+        print(f"   First empty cell at: row {empty_loc[0]}, col {empty_loc[1]}")
+    else:
+        print("   No empty cells found")
     
     # Count empty cells
     print("\n5. Counting all empty cells:")
