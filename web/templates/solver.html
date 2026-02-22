@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Solver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Sudoku Solver</h1>
+        <div id="puzzle-input">
+            <h2>Input Puzzle</h2>
+            <form action="/solve" method="post">
+                <textarea name="puzzle" rows="10" cols="30" placeholder="Enter your Sudoku puzzle here..."></textarea>
+                <button type="submit">Solve</button>
+            </form>
+        </div>
+        <div id="solution">
+            <h2>Solution</h2>
+            {% if solution %}
+                <pre>{{ solution }}</pre>
+            {% else %}
+                <p>No solution found or invalid puzzle.</p>
+            {% endif %}
+        </div>
+        <div id="validation-messages">
+            {% if validation_messages %}
+                <h3>Validation Messages</h3>
+                <ul>
+                    {% for message in validation_messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
