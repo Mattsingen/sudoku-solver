@@ -54,6 +54,10 @@ class RegularSolver(BaseSolver):
             return puzzle_copy
         
         return None
+
+    def validate(self, puzzle):
+        """Validate a puzzle using the standard Sudoku rules."""
+        return self.validator.validate(puzzle)
     
     def find_all_solutions(self, puzzle, limit=None):
         """
